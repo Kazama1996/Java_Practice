@@ -1,8 +1,5 @@
 package Launcher.ipml;
 
-import javax.swing.text.Style;
-
-import JAVA_Language.Ex;
 import JAVA_Language.Friend;
 import JAVA_Language.Person;
 import Launcher.Launcher;
