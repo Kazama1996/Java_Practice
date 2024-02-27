@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 import javax.management.RuntimeErrorException;
 
+import Algorithm.Sorting.Impl.QuickSort;
 import DesignPattern.Proxy.DynamicProxy.ProxyFactory;
 import DesignPattern.Proxy.DynamicProxy.RealClass1;
 import DesignPattern.Proxy.DynamicProxy.RealClass2;
@@ -33,78 +34,222 @@ import Launcher.ipml.DataStructure.RedBlackTreeLauncher;
 import Launcher.ipml.DesignPattern.FlyWeightLauncher;
 import Launcher.ipml.DesignPattern.ProxyLauncher;
 
-class Pair<T> {
-    T first;
-    T second;
-
-    public Pair(T first, T second) {
-        this.first = first;
-        this.second = second;
-    }
-
-    public T getFirst() {
-        return this.first;
-    }
-
-    public T getSecond() {
-        return this.second;
-    }
-
-    public void setFirst(T first) {
-        this.first = first;
-    }
-
-    public void setSecond(T second) {
-        this.second = second;
-    }
-
-}
-
-class IntPair extends Pair<Integer> {
-
-    public IntPair(Integer first, Integer second) {
-        super(first, second);
-        // TODO Auto-generated constructor stub
-    }
-
-}
-
 public class App {
 
-    public static <T> void copyElements(List<? extends T> source, List<T> destination) {
-        for (T element : source) {
-            destination.add(element);
+    // public static int[][] pascal(int rowNum) {
+
+    // int[][] triangle = new int[rowNum][];
+
+    // for (int i = 0; i < rowNum; i++) {
+    // triangle[i] = new int[i + 1];
+
+    // for (int j = 0; j < triangle[i].length; j++) {
+    // triangle[i][j] = calcTriangleElement(i, j);
+    // }
+    // }
+    // return triangle;
+    // }
+
+    // static int calcTriangleElement(int row, int col) {
+    // return (col == 0 || col == row) ? 1 : calcTriangleElement(row - 1, col - 1) +
+    // calcTriangleElement(row - 1, col);
+    // }
+
+    public static void mergee(int[] array, int front, int mid, int end) {
+        int[] lsub = Arrays.copyOfRange(array, front, mid + 1);
+        int[] rsub = Arrays.copyOfRange(array, mid + 1, end + 1);
+        int Lidx = 0;
+        int Ridx = 0;
+        int k = front;
+        while (Lidx < lsub.length && Ridx < rsub.length) {
+            if (lsub[Lidx] < rsub[Ridx]) {
+                array[k] = lsub[Lidx];
+                Lidx++;
+            } else {
+                array[k] = rsub[Ridx];
+                Ridx++;
+            }
+            k++;
+        }
+
+        while (Lidx < lsub.length) {
+            array[k] = lsub[Lidx];
+            Lidx++;
+            k++;
+        }
+
+        while (Ridx < rsub.length) {
+            array[k] = rsub[Ridx];
+            Ridx++;
+            k++;
+        }
+
+    }
+
+    // public static void mergeSort(int[] array, int front, int end) {
+    // if (front < end) {
+    // int mid = front + (end - front) / 2;
+    // mergeSort(array, front, mid);
+    // mergeSort(array, mid + 1, end);
+    // merge(array, front, mid, end);
+    // }
+    // }
+
+    // private static void swap(int[] arr, int i, int j) {
+    // int temp = arr[i];
+    // arr[i] = arr[j];
+    // arr[j] = temp;
+    // }
+
+    // public static int findPivot(int[] array, int front, int end) {
+    // int i = front - 1;
+    // int pivot = array[end];
+    // for (int j = front; j < end; j++) {
+    // if (array[j] > pivot) {
+    // i++;
+    // swap(array, i, j);
+    // }
+    // }
+    // swap(array, i + 1, end);
+
+    // return i + 1;
+    // }
+
+    // public static void quickSort(int[] array, int front, int end) {
+    // if (front < end) {
+    // int pivot = findPivot(array, front, end);
+    // quickSort(array, front, pivot - 1);
+    // quickSort(array, pivot, end);
+    // }
+    // }
+
+    public static void merge(int[] array, int front, int mid, int end) {
+        int[] lSub = Arrays.copyOfRange(array, front, mid + 1);
+        int[] rSub = Arrays.copyOfRange(array, mid + 1, end + 1);
+        int lIdx = 0;
+        int rIdx = 0;
+        int i = front;
+
+        while (lIdx < lSub.length && rIdx < rSub.length) {
+            if (lSub[lIdx] < rSub[rIdx]) {
+                array[i] = lSub[lIdx];
+                lIdx++;
+            } else {
+                array[i] = rSub[rIdx];
+                rIdx++;
+            }
+            i++;
+        }
+
+        while (lIdx < lSub.length) {
+            array[i] = lSub[lIdx];
+            i++;
+            lIdx++;
+        }
+
+        while (rIdx < rSub.length) {
+            array[i] = rSub[rIdx];
+            i++;
+            rIdx++;
+        }
+
+    }
+
+    public static void mergeSort(int[] array, int front, int end) {
+        if (front < end) {
+            int mid = front + (end - front) / 2;
+            mergeSort(array, front, mid);
+            mergeSort(array, mid + 1, end);
+            merge(array, front, mid, end);
         }
     }
 
-    static <T> void addElement(List<? super T> list, T element) {
-        list.add(element);
+    private static void swap(int[] array, int i, int j) {
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
     }
 
-    public static long sumWildcard(List<? extends Number> numbers) {
-        return numbers.stream().mapToLong(Number::longValue).sum();
+    public static int findPivot(int[] array, int front, int end) {
+        int pivot = array[end];
+        int i = front - 1;
+
+        for (int j = front; j < end; j++) {
+            if (array[j] < pivot) {
+                i++;
+                swap(array, i, j);
+            }
+        }
+
+        swap(array, i + 1, end);
+        return i + 1;
     }
 
-    public static <T> void myCopy(List<? extends T> from, List<? super T> to) {
-        for (T el : from) {
-            to.add(el);
+    /*
+     * @Description Quick Sort Implementation
+     * 
+     * @Author Adam
+     * 
+     * @date 2024/02/07
+     * 
+     * @param array int array any Integer array
+     * 
+     * @param front int the first index of the array
+     * 
+     * @param end int the last index of the array
+     * 
+     * @exception Exception
+     */
+    public static void quickSort(int[] array, int front, int end) throws Exception {
+        if (front < end) {
+            int pivotId = findPivot(array, front, end);
+            quickSort(array, front, pivotId - 1);
+            quickSort(array, pivotId + 1, end);
         }
     }
 
-    public static <T> void PrintAllElement(List<? extends T> list) {
-        for (T el : list) {
-            System.out.println(el);
-        }
+    {
+        System.out.println("c");
+    }
+
+    static {
+        System.out.println("b");
+    }
+
+    {
+        System.out.println("a");
+    }
+
+    public App() {
+        System.out.println("d");
     }
 
     public static void main(String[] args) {
 
-        Pair<String> p1 = new Pair<>("Hello", "world");
-        Pair<Integer> p2 = new Pair<>(123, 456);
-        Class c1 = p1.getClass();
-        Class c2 = p2.getClass();
-        System.out.println(c1 == c2); // true
-        System.out.println(c1 == Pair.class); // true
-    }
+        App app = new App();
 
+        // int[] a = new int[] { 5, 7, 3, 4, 1, 8, 9, 6, 2, 10 };
+
+        // for (int i = 0; i < a.length; i++) {
+        // for (int j = i + 1; j < a.length; j++) {
+        // if (a[i] > a[j]) {
+        // swap(a, i, j);
+        // }
+        // }
+        // }
+
+        // // for (int i = 0; i < a.length; i++) {
+        // // for (int j = i; j < a.length; j++) {
+        // // if (a[i] > a[j]) {
+        // // int temp = a[i];
+        // // a[i] = a[j];
+        // // a[j] = temp;
+        // // }
+        // // }
+        // // }
+
+        // int c = 2, b = 3;
+
+        // Arrays.stream(a).forEach(System.out::println);
+    }
 }
